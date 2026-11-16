@@ -1,0 +1,17 @@
+{
+  "name": "kithlore",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prepare": "husky",
+    "lint": "npm run lint --workspace apps/web && npm run format:check --workspace apps/web",
+    "test": "npm run test --workspace apps/web -- --watch=false",
+    "build": "npm run build --workspace apps/web"
+  },
+  "workspaces": ["apps/web"],
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7"
+  }
+}
