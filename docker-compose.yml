@@ -48,11 +48,9 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - "${API_PORT:-8080}:8080"
+      - "${API_PORT:-8081}:8080"
     healthcheck:
-      test:
-        - CMD-SHELL
-        - "code=$$(curl --output /dev/null --silent --write-out '%{http_code}' http://127.0.0.1:8080/ || true); [ \"$$code\" -ge 200 ] && [ \"$$code\" -lt 500 ]"
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8080"]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -60,7 +58,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.999"
+          cpus: "1.99"
           memory: 2G
 
   web:
@@ -87,11 +85,16 @@ services:
   zimaboard-sim:
     image: alpine:3.22
     profiles: [zimaboard-sim]
-    command: ["sh", "-c", "echo 'Simulation active: limites globales Compose API 2 CPU/2 Gio, PostgreSQL 1.5 CPU/2 Gio, web 0.5 CPU/512 Mio (total 4 CPU/4.5 Gio)' && sleep infinity"]
+    command: ["sh", "-c", "echo 'Simulation active: limites globales Compose API 1.99 CPU/2 Gio, PostgreSQL 1.5 CPU/2 Gio, web 0.5 CPU/512 Mio, marqueur 0.01 CPU/16 Mio (total 4 CPU/4.5 Gio)' && sleep infinity"]
+    healthcheck:
+      test: ["CMD", "sh", "-c", "true"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
     deploy:
       resources:
         limits:
-          cpus: "0.001"
+          cpus: "0.01"
           memory: 16M
 
 volumes:
