@@ -1,0 +1,98 @@
+name: kithlore
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-kithlore}
+      POSTGRES_USER: ${DB_USER:-kithlore}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-local-dev-password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-kithlore} -d ${DB_NAME:-kithlore}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 2G
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-kithlore}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-kithlore}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-local-dev-password}
+      JWT_SECRET: ${JWT_SECRET:-local-only-change-this-secret-before-deployment-0123456789}
+      LLM_PROVIDER_PRIMARY: ${LLM_PROVIDER_PRIMARY:-anthropic}
+      LLM_PROVIDER_FALLBACK: ${LLM_PROVIDER_FALLBACK:-openai}
+      LLM_MODEL_NARRATION: ${LLM_MODEL_NARRATION:-}
+      LLM_MODEL_SUMMARY: ${LLM_MODEL_SUMMARY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_COMPATIBLE_BASE_URL: ${OPENAI_COMPATIBLE_BASE_URL:-}
+      OPENAI_COMPATIBLE_API_KEY: ${OPENAI_COMPATIBLE_API_KEY:-}
+      ROOM_DAILY_TOKEN_CAP: ${ROOM_DAILY_TOKEN_CAP:-500000}
+      CONTEXT_MAX_TOKENS: ${CONTEXT_MAX_TOKENS:-12000}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${API_PORT:-8080}:8080"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "code=$$(curl --output /dev/null --silent --write-out '%{http_code}' http://127.0.0.1:8080/ || true); [ \"$$code\" -ge 200 ] && [ \"$$code\" -lt 500 ]"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: "1.999"
+          memory: 2G
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${WEB_PORT:-4200}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+  zimaboard-sim:
+    image: alpine:3.22
+    profiles: [zimaboard-sim]
+    command: ["sh", "-c", "echo 'Simulation active: limites globales Compose API 2 CPU/2 Gio, PostgreSQL 1.5 CPU/2 Gio, web 0.5 CPU/512 Mio (total 4 CPU/4.5 Gio)' && sleep infinity"]
+    deploy:
+      resources:
+        limits:
+          cpus: "0.001"
+          memory: 16M
+
+volumes:
+  postgres_data:
