@@ -25,6 +25,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Normalize image name
+        id: image_name
+        shell: bash
+        run: echo "repository=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
       - name: Build and publish API image
         uses: docker/build-push-action@v7
         with:
@@ -32,8 +36,8 @@ jobs:
           file: apps/api/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}-api:develop
-            ghcr.io/${{ github.repository }}-api:develop-${{ github.sha }}
+            ghcr.io/${{ steps.image_name.outputs.repository }}-api:develop
+            ghcr.io/${{ steps.image_name.outputs.repository }}-api:develop-${{ github.sha }}
           cache-from: type=gha,scope=api
           cache-to: type=gha,mode=max,scope=api
       - name: Build and publish web image
@@ -43,7 +47,7 @@ jobs:
           file: apps/web/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}-web:develop
-            ghcr.io/${{ github.repository }}-web:develop-${{ github.sha }}
+            ghcr.io/${{ steps.image_name.outputs.repository }}-web:develop
+            ghcr.io/${{ steps.image_name.outputs.repository }}-web:develop-${{ github.sha }}
           cache-from: type=gha,scope=web
           cache-to: type=gha,mode=max,scope=web
