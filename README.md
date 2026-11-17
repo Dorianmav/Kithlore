@@ -31,3 +31,7 @@ Stop the stack with `docker compose down`; add `-v` only when you also intend to
 Pull requests and pushes run the `CI` workflow. The `Validate API and web` and `Scan for secrets` checks should be required before merging into `main` and `develop` (Repository settings → Branches → branch protection rules). The workflow also builds both Docker images without publishing them. Merges to `develop` publish `ghcr.io/<owner>/<repository>-api` and `ghcr.io/<owner>/<repository>-web`, tagged `develop` and `develop-<commit-sha>`.
 
 Add the repository Actions secret `NVD_API_KEY` for the OWASP Dependency-Check job. NVD requires an API key for vulnerability database updates; without it, that audit cannot run.
+
+## Known issues
+
+- **npm audit: picomatch ReDoS** — the development toolchain currently resolves `picomatch@4.0.7` transitively through Angular and related build tools. The GitHub advisory marks versions through `4.0.7` as affected and currently lists no patched release: <https://github.com/advisories/GHSA-fc5q-39xc-vjpf>. `npm audit --audit-level=high` therefore fails. Revisit when upstream publishes a fix; update the dependency tree or adopt a reviewed backport, then rerun the audit and frontend checks. Avoid downgrading to an affected older version.
