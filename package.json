@@ -6,9 +6,10 @@
     "prepare": "husky",
     "lint": "npm run lint --workspace apps/web && npm run format:check --workspace apps/web",
     "test": "npm run test --workspace apps/web -- --watch=false",
-    "build": "npm run build --workspace apps/web"
+    "build": "npm run build --workspace apps/web",
+    "contracts:generate": "bash tools/gen-contracts.sh"
   },
-  "workspaces": ["apps/web"],
+  "workspaces": ["apps/web", "tools/contracts"],
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",

@@ -12,6 +12,20 @@ jobs:
   validate:
     name: Validate API and web
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: kithlore
+          POSTGRES_USER: kithlore
+          POSTGRES_PASSWORD: kithlore
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U kithlore -d kithlore"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Check out source
         uses: actions/checkout@v7
@@ -47,6 +61,32 @@ jobs:
       - name: Verify API (including Testcontainers integration tests)
         working-directory: apps/api
         run: bash ./mvnw -B verify
+
+      - name: Start API for OpenAPI generation
+        env:
+          DATABASE_URL: jdbc:postgresql://localhost:5432/kithlore
+          DATABASE_USERNAME: kithlore
+          DATABASE_PASSWORD: kithlore
+          JWT_SECRET: ci-only-secret-with-more-than-thirty-two-characters
+        run: |
+          java -jar apps/api/app/target/app-0.1.0-SNAPSHOT.jar > "$RUNNER_TEMP/api.log" 2>&1 &
+          for attempt in {1..60}; do
+            if curl --fail --silent http://localhost:8080/openapi > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat "$RUNNER_TEMP/api.log"
+          exit 1
+
+      - name: Regenerate API contracts
+        run: npm run contracts:generate
+
+      - name: Validate generated contract headers
+        run: bash tools/check-contracts.sh
+
+      - name: Verify generated contracts are committed
+        run: git diff --exit-code -- apps/web/src/app/contracts
 
       - name: Install API modules for dependency analysis
         working-directory: apps/api

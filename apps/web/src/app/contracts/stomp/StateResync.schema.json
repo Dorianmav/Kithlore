@@ -1,0 +1,17 @@
+{
+  "$comment": "GENERATED - DO NOT EDIT",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "StateResync.schema.json",
+  "title": "StateResync",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "sinceSeq": {
+      "type": "integer"
+    }
+  },
+  "required": ["type", "sinceSeq"]
+}

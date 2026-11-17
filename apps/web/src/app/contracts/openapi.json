@@ -1,0 +1,15 @@
+{
+  "x-generated": "GENERATED - DO NOT EDIT",
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {},
+  "components": {}
+}

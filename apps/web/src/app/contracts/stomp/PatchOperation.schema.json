@@ -1,0 +1,48 @@
+{
+  "$comment": "GENERATED - DO NOT EDIT",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "PatchOperation.schema.json",
+  "title": "PatchOperation",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "op": {
+      "type": "string"
+    },
+    "characterId": {
+      "type": "string"
+    },
+    "itemId": {
+      "type": "string"
+    },
+    "qty": {
+      "type": "integer"
+    },
+    "abilityId": {
+      "type": "string"
+    },
+    "rollId": {
+      "type": "string"
+    },
+    "delta": {
+      "type": "integer"
+    },
+    "key": {
+      "type": "string"
+    },
+    "value": {},
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "attitude": {
+      "type": "string"
+    },
+    "locationId": {
+      "type": "string"
+    }
+  },
+  "required": ["op"]
+}

@@ -1,0 +1,23 @@
+{
+  "$comment": "GENERATED - DO NOT EDIT",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ActionSubmit.schema.json",
+  "title": "ActionSubmit",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "clientActionId": {
+      "type": "string"
+    },
+    "roundId": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    }
+  },
+  "required": ["type", "clientActionId", "roundId", "text"]
+}
