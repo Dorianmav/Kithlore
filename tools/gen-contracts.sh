@@ -7,6 +7,7 @@ contracts_dir="$repo_root/apps/web/src/app/contracts"
 openapi_file="$contracts_dir/openapi.json"
 types_file="$contracts_dir/api.ts"
 schema_dir="$contracts_dir/stomp"
+tool_bin="$repo_root/node_modules/.bin"
 generated_marker="GENERATED - DO NOT EDIT"
 
 mkdir -p "$contracts_dir" "$schema_dir"
@@ -17,10 +18,10 @@ node - "$openapi_tmp" "$openapi_file" "$generated_marker" <<'NODE'
 const fs = require('node:fs');
 const [input, output, marker] = process.argv.slice(2);
 const spec = JSON.parse(fs.readFileSync(input, 'utf8'));
-spec['x-generated'] = marker;
-fs.writeFileSync(output, `${JSON.stringify(spec, null, 2)}\n`);
+const generatedSpec = { 'x-generated': marker, ...spec, servers: [{ url: '/' }] };
+fs.writeFileSync(output, `${JSON.stringify(generatedSpec, null, 2)}\n`);
 NODE
-npx --yes --package=openapi-typescript@7.13.0 --package=typescript@5.9.3 openapi-typescript \
+"$tool_bin/openapi-typescript" \
   "$openapi_file" \
   --output "$types_file"
 
@@ -38,7 +39,7 @@ fi
 
 for schema_file in "$schema_dir"/*.schema.json; do
   type_file="${schema_file%.schema.json}.ts"
-  npx --yes --package=json-schema-to-typescript@15.0.4 json2ts \
+  "$tool_bin/json2ts" \
     --input "$schema_file" \
     --output "$type_file"
   generated_file="$(mktemp)"
@@ -63,5 +64,5 @@ for (const name of fs.readdirSync(directory)) {
   );
 }
 NODE
-npx --yes --package=prettier@3.8.1 prettier --write \
+"$tool_bin/prettier" --write \
   "$openapi_file" "$types_file" "$schema_dir"/*.schema.json "$schema_dir"/*.ts >/dev/null

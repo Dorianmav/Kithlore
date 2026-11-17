@@ -82,6 +82,9 @@ jobs:
       - name: Regenerate API contracts
         run: npm run contracts:generate
 
+      - name: Validate generated contract headers
+        run: bash tools/check-contracts.sh
+
       - name: Verify generated contracts are committed
         run: git diff --exit-code -- apps/web/src/app/contracts
 

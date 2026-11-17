@@ -37,10 +37,10 @@ public final class ContractSchemaGenerator {
 
   private static void writeSchema(Class<?> contract, Path output) throws IOException {
     ObjectNode schema = MAPPER.createObjectNode();
+    schema.put("$comment", GENERATED_MARKER);
     schema.put("$schema", "https://json-schema.org/draft/2020-12/schema");
     schema.put("$id", contract.getSimpleName() + ".schema.json");
     schema.put("title", contract.getSimpleName());
-    schema.put("$comment", GENERATED_MARKER);
     schema.put("type", "object");
     schema.put("additionalProperties", false);
     ObjectNode properties = schema.putObject("properties");

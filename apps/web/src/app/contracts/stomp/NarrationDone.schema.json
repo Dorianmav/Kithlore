@@ -1,8 +1,8 @@
 {
+  "$comment": "GENERATED - DO NOT EDIT",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "NarrationDone.schema.json",
   "title": "NarrationDone",
-  "$comment": "GENERATED - DO NOT EDIT",
   "type": "object",
   "additionalProperties": false,
   "properties": {
