@@ -48,6 +48,10 @@ jobs:
         working-directory: apps/api
         run: bash ./mvnw -B verify
 
+      - name: Install API modules for dependency analysis
+        working-directory: apps/api
+        run: bash ./mvnw -B -DskipTests install
+
       - name: Audit Java dependencies
         working-directory: apps/api
         env:
