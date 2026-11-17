@@ -1,12 +1,10 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { TranslocoModule } from '@jsverse/transloco';
+import { ApiStatusComponent } from './core/api-status.component';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [TranslocoModule, ApiStatusComponent],
   selector: 'app-root',
-  styleUrl: './app.css',
   templateUrl: './app.html',
 })
-export class App {
-  protected readonly title = signal('web');
-}
+export class App {}

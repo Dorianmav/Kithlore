@@ -4,6 +4,28 @@ const { defineConfig } = require('eslint/config');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 
+const templateTextPlugin = {
+  rules: {
+    'no-hardcoded-text': {
+      meta: {
+        type: 'problem',
+        docs: { description: 'Require user-facing template text to use Transloco.' },
+        schema: [],
+        messages: { hardcoded: 'Use a Transloco expression for user-facing text.' },
+      },
+      create(context) {
+        return {
+          Text(node) {
+            if (node.value.trim()) {
+              context.report({ node, messageId: 'hardcoded' });
+            }
+          },
+        };
+      },
+    },
+  },
+};
+
 module.exports = defineConfig([
   {
     files: ['**/*.ts'],
@@ -34,8 +56,11 @@ module.exports = defineConfig([
     },
   },
   {
-    files: ['**/*.html'],
+    files: ['src/app/**/*.html'],
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
-    rules: {},
+    plugins: { kithlore: templateTextPlugin },
+    rules: {
+      'kithlore/no-hardcoded-text': 'error',
+    },
   },
 ]);

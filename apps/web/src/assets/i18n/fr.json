@@ -1,0 +1,18 @@
+{
+  "navigation": { "label": "Navigation principale" },
+  "brand": { "name": "Kithlore", "tagline": "Les histoires se tissent ensemble" },
+  "home": {
+    "eyebrow": "Un monde vivant, à écrire ensemble",
+    "title": "Un monde à façonner, ensemble.",
+    "description": "Kithlore est un univers partagé où les idées prennent vie, où les récits se croisent et où chaque voix contribue à la suite.",
+    "badge": "L’aventure commence bientôt",
+    "comingSoon": "Le monde se prépare à vous accueillir."
+  },
+  "api": {
+    "label": "Services",
+    "title": "État de la plateforme",
+    "description": "La connexion est vérifiée automatiquement. Le statut se met à jour dès que le service répond.",
+    "online": "API en ligne",
+    "offline": "API hors ligne"
+  }
+}
