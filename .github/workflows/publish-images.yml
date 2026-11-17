@@ -1,9 +1,8 @@
 name: Publish images
 
 on:
-  workflow_run:
-    workflows: [CI]
-    types: [completed]
+  push:
+    branches: [develop]
 
 permissions:
   contents: read
@@ -11,10 +10,6 @@ permissions:
 jobs:
   publish:
     name: Publish API and web to GHCR
-    if: >-
-      ${{ github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'develop' &&
-      github.event.workflow_run.head_repository.full_name == github.repository }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -22,8 +17,6 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v4
       - name: Log in to GHCR
@@ -40,7 +33,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}-api:develop
-            ghcr.io/${{ github.repository }}-api:develop-${{ github.event.workflow_run.head_sha }}
+            ghcr.io/${{ github.repository }}-api:develop-${{ github.sha }}
           cache-from: type=gha,scope=api
           cache-to: type=gha,mode=max,scope=api
       - name: Build and publish web image
@@ -51,6 +44,6 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}-web:develop
-            ghcr.io/${{ github.repository }}-web:develop-${{ github.event.workflow_run.head_sha }}
+            ghcr.io/${{ github.repository }}-web:develop-${{ github.sha }}
           cache-from: type=gha,scope=web
           cache-to: type=gha,mode=max,scope=web
