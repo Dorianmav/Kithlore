@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "StateSnapshot.schema.json",
+  "title": "StateSnapshot",
+  "$comment": "GENERATED - DO NOT EDIT",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "seq": {
+      "type": "integer"
+    },
+    "state": {}
+  },
+  "required": ["type", "seq", "state"]
+}

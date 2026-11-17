@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "StatePatch.schema.json",
+  "title": "StatePatch",
+  "$comment": "GENERATED - DO NOT EDIT",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "seq": {
+      "type": "integer"
+    },
+    "ops": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "op": {
+            "type": "string"
+          },
+          "characterId": {
+            "type": "string"
+          },
+          "itemId": {
+            "type": "string"
+          },
+          "qty": {
+            "type": "integer"
+          },
+          "abilityId": {
+            "type": "string"
+          },
+          "rollId": {
+            "type": "string"
+          },
+          "delta": {
+            "type": "integer"
+          },
+          "key": {
+            "type": "string"
+          },
+          "value": {},
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "attitude": {
+            "type": "string"
+          },
+          "locationId": {
+            "type": "string"
+          }
+        },
+        "required": ["op"]
+      }
+    }
+  },
+  "required": ["type", "seq", "ops"]
+}

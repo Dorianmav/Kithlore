@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "RoomJoin.schema.json",
+  "title": "RoomJoin",
+  "$comment": "GENERATED - DO NOT EDIT",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "roomId": {
+      "type": "string"
+    }
+  },
+  "required": ["type", "roomId"]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "PresenceUpdate.schema.json",
+  "title": "PresenceUpdate",
+  "$comment": "GENERATED - DO NOT EDIT",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "playerId": {
+      "type": "string"
+    },
+    "connected": {
+      "type": "boolean"
+    }
+  },
+  "required": ["type", "playerId", "connected"]
+}

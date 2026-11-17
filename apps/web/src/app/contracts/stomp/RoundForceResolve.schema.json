@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "RoundForceResolve.schema.json",
+  "title": "RoundForceResolve",
+  "$comment": "GENERATED - DO NOT EDIT",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "roundId": {
+      "type": "string"
+    }
+  },
+  "required": ["type", "roundId"]
+}

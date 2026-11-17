@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "RollResult.schema.json",
+  "title": "RollResult",
+  "$comment": "GENERATED - DO NOT EDIT",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "rollId": {
+      "type": "string"
+    },
+    "playerId": {
+      "type": "string"
+    },
+    "formula": {
+      "type": "string"
+    },
+    "dice": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "total": {
+      "type": "integer"
+    },
+    "dc": {
+      "type": "integer"
+    },
+    "outcome": {
+      "type": "string"
+    }
+  },
+  "required": ["type", "rollId", "playerId", "formula", "dice", "total", "dc", "outcome"]
+}
