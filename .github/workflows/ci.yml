@@ -46,13 +46,13 @@ jobs:
 
       - name: Verify API (including Testcontainers integration tests)
         working-directory: apps/api
-        run: ./mvnw -B verify
+        run: bash ./mvnw -B verify
 
       - name: Audit Java dependencies
         working-directory: apps/api
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-        run: ./mvnw -B org.owasp:dependency-check-maven:check -DnvdApiKey="$NVD_API_KEY" -DfailBuildOnCVSS=7
+        run: bash ./mvnw -B org.owasp:dependency-check-maven:check -DnvdApiKey="$NVD_API_KEY" -DfailBuildOnCVSS=7
 
   secret-scan:
     name: Scan for secrets
