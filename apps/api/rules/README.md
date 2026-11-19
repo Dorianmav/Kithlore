@@ -17,4 +17,16 @@ sequence needs to be replayed.
 `DISADVANTAGE`. Its result preserves the rolled values in `rolls()` and exposes
 the retained value as `kept()`.
 
+## Combat API
+
+Create `Combatant` values with current hit points, maximum hit points, and armor
+class, and describe a weapon with its attack bonus and damage notation. Call
+`CombatRules.resolveAttack(attacker, target, weapon, rng)` to roll the d20 attack
+and damage. A natural 20 doubles the damage dice and preserves the modifier;
+`AttackResult.damageLog()` records the damage notation, individual dice, and
+modifier. `CombatRules.applyDamage` and `applyHealing` clamp hit points to
+`0..maxHitPoints`; `Combatant.state()` reports `DOWN` at zero and `ALIVE`
+otherwise. Negative, fractional, or non-finite hit point amounts raise the typed
+`InvalidHitPointAmount` exception.
+
 Run the module checks from `apps/api` with `./mvnw -pl rules verify`.
